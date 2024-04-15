@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Data Table</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    h1 {
+        text-align: center;
+    }
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    input[type="text"],
+    input[type="number"],
+    button {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<h1>Form Data Table</h1>
+
+<form id="formData">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName"><br><br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName"><br><br>
+
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age"><br><br>
+
+    <button type="button" onclick="addData()">Add Data</button>
+</form>
+
+<table id="dataTable"></table>
+
+<script>
+function addData() {
+    const formData = new FormData(document.getElementById("formData"));
+    const tableData = document.createElement("table");
+    tableData.border = "1";
+
+    // Create table headings
+    const tableHead = document.createElement("thead");
+    const headingsRow = document.createElement("tr");
+    for (const [key] of formData.entries()) {
+        const th = document.createElement("th");
+        th.textContent = key.charAt(0).toUpperCase() + key.slice(1); // Capitalize first letter
+        headingsRow.appendChild(th);
+    }
+    tableHead.appendChild(headingsRow);
+
+    // Create table body
+    const tableBody = document.createElement("tbody");
+    const dataRow = document.createElement("tr");
+    for (const value of formData.values()) {
+        const td = document.createElement("td");
+        td.textContent = value;
+        dataRow.appendChild(td);
+    }
+    tableBody.appendChild(dataRow);
+
+    // Assemble table
+    tableData.appendChild(tableHead);
+    tableData.appendChild(tableBody);
+
+    // Display table
+    const existingTable = document.getElementById("dataTable");
+    if (existingTable) {
+        existingTable.parentNode.replaceChild(tableData, existingTable);
+    } else {
+        document.body.appendChild(tableData);
+    }
+
+    // Clear form fields
+    document.getElementById("formData").reset();
+}
+</script>
+
+</body>
+</html>
